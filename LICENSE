@@ -1,5 +1,54 @@
-IF U WANT TO USE WRITE ME A EMAIL nyirimartin101@proton.me
+LTG Emailware License 1.0
 
-THIS IS JUST A CONCEPT FOR A REFORM
+Copyright (c) 2026 [AUTHOR NAME] <[EMAIL]>
 
-CREATED BY NYIRI MARTIN 
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this work and its associated files (the "Work"), to deal in the Work
+without restriction, including without limitation the rights to use, copy,
+modify, merge, publish, distribute, sublicense, and/or sell copies of the
+Work, subject to the following conditions:
+
+1. ATTRIBUTION
+   The above copyright notice and this permission notice shall be included in
+   all copies or substantial portions of the Work.
+
+2. NOTIFICATION (EMAILWARE)
+   If you use the Work in a project, product, publication, service, teaching
+   material, or derivative work, you must send an email to [EMAIL] with a
+   short description of the use: the name of the project, a link if one
+   exists, and one sentence about what the Work is used for. This
+   notification is a condition of this license, not a request. One email per
+   project is enough; no reply is required.
+
+   If email is not available to you, you may open an issue at
+   [REPOSITORY URL]/issues with the same information instead.
+
+3. NO TRADEMARK RIGHTS
+   This license does not grant permission to use the trade names, trademarks,
+   service marks, or product names of the copyright holder, except as required
+   for reasonable and customary use in describing the origin of the Work.
+
+4. NO WARRANTY
+   THE WORK IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+   FROM, OUT OF OR IN CONNECTION WITH THE WORK OR THE USE OR OTHER DEALINGS IN
+   THE WORK.
+
+5. SEVERABILITY
+   If the notification requirement in Section 2 is held unenforceable or
+   invalid, the remaining permissions and conditions of this license remain in
+   full force and effect.
+
+NOTICE
+
+This is a source-available license with an email-notification condition. It is
+not an OSI-approved open-source license, because it imposes an obligation
+beyond attribution. The legal texts of statutes are not copyrightable in
+Hungary (Act LXXVI of 1999, Section 1(4)); this license covers the concept,
+the documentation, the diagrams, the schema and the code in this repository,
+not the statutes themselves.
+
+LTG – Lifecycle Tax Graph / Graphum Tributarium Vitae

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="la" lang="la">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LTG – Graphum Tributarium Vitae | Conceptus v0.2</title>
+  <meta name="description" content="LTG: modelus tributorum ex eventibus et statibus. Conceptus et exemplum autocineti." />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+  <link rel="icon" href="../favicon.ico" sizes="any" />
+  <link rel="stylesheet" href="../assets/style.css" />
+</head>
+<body>
+<div class="wrap">
+
+  <header class="site">
+    <nav class="lang" aria-label="Lingua">
+      <a href="../index.xhtml" xml:lang="hu" lang="hu">Magyar</a>
+      <a href="../en/index.xhtml" xml:lang="en" lang="en">English</a>
+      <a href="index.xhtml" aria-current="page" xml:lang="la" lang="la">Latina</a>
+    </nav>
+
+    <h1>LTG – Graphum Tributarium Vitae</h1>
+    <p class="subtitle">Conceptus et exemplum</p>
+    <p class="meta">v0.2 · die 29 Octobris 2026 · exemplar laboris · versio breviata</p>
+
+    <p class="lead">Omne tributum ad duos eventus reduci potest – possessionem (<em>status</em>) et motum (<em>translatio</em>) – resque vectigales ut machinam statuum describimus, in qua cuilibet transitui norma tributi adiungitur.</p>
+  </header>
+
+  <main>
+
+    <h2 id="problema"><span class="num">1.</span>Problema</h2>
+    <p>Ratio hodierna tributorum et tabularum publicarum in <strong>textu</strong> nititur. Regulae in legibus, annexis et emendationibus dispersae sunt. Eadem res – exempli gratia autocinetum – per vitam suam varia tributa subit: tributum valore additum, tributum inscriptionis, tributum vehiculi, vectigal transactionis. Regulae separatim describunt quid fiat in emptione, venditione, furto, exportatione, demolitione.</p>
+    <p>Quattuor res difficiles fiunt:</p>
+    <ul>
+      <li>responsum dare, quantum tributi in casu concreto debeatur;</li>
+      <li>effectum reformationis simulare;</li>
+      <li>corpus iuris machinae legibile reddere;</li>
+      <li>civitates inter se comparare.</li>
+    </ul>
+    <p>LTG novum tributum non introducit, sed <strong>novum modum describendi</strong> supra regulas exsistentes praebet. Vis iuridica a lege subiecta manat; LTG tantum eandem regulam in uno modeli verificabili repraesentat.</p>
+
+    <h2 id="modelus"><span class="num">2.</span>Nucleus modeli</h2>
+    <p>LTG duobus primitivis innititur:</p>
+    <ul>
+      <li><strong>STATUS</strong> – possessio rei certo tempore; plerumque tributum annuum.</li>
+      <li><strong>MOTUS</strong> – translatio rei; plerumque tributum transactionis.</li>
+    </ul>
+    <p>Accedit tertium elementum, non tributarium: <strong>status</strong>. Cursus vitae rei est machina statuum finita:</p>
+<pre><code>NOVUM ──EMPTIO──► IN_COMMERCIO ──VENDITIO──► IN_COMMERCIO
+                 │
+                 ├── FURTUM ─────► SUBLATUM ──RECUPERATIO──► IN_COMMERCIO
+                 │                     └── non recuperatum ──► DAMNUM
+                 ├── DAMNUM_TOTUM ─► DAMNUM
+                 ├── EXPORTATIO ───► EXPORTATUM
+                 └── DEMOLITIO ────► DEMOLITUM</code></pre>
+    <p>Omnis sagitta est <strong>transitus</strong>, et cuilibet transitui <strong>norma tributi</strong> adiungitur. Norma hos campos habet:</p>
+    <table>
+      <thead><tr><th>Campus</th><th>Significatio</th></tr></thead>
+      <tbody>
+        <tr><td>basis</td><td>id quod tributo subicitur (pretium, valor, potentia)</td></tr>
+        <tr><td>rata</td><td>pars centesima aut summa fixa</td></tr>
+        <tr><td>solvens</td><td>qui iure solvit</td></tr>
+        <tr><td>portator</td><td>qui onus re vera sustinet</td></tr>
+        <tr><td>tempus</td><td>quando debitum fiat</td></tr>
+        <tr><td>exemptio</td><td>exceptiones</td></tr>
+        <tr><td>poena</td><td>quid fiat si non solvatur</td></tr>
+      </tbody>
+    </table>
+    <p>Notatio, qua in hoc documento refertur:</p>
+<pre><code>LTG:AUTOCINETUM.IN_COMMERCIO --VENDITIO--&gt; LTG:AUTOCINETUM.IN_COMMERCIO [16%, venditor]
+LTG:AUTOCINETUM.IN_COMMERCIO --FURTUM--&gt; LTG:AUTOCINETUM.SUBLATUM [0%, nullum tributum]
+LTG:AUTOCINETUM.SUBLATUM --RECUPERATIO--&gt; LTG:AUTOCINETUM.IN_COMMERCIO [0%, nullum tributum]</code></pre>
+
+    <h2 id="autocinetum"><span class="num">3.</span>Exemplum autocineti</h2>
+    <p>Autocinetum primum exemplum modeli est. Status et eventus eius:</p>
+    <table>
+      <thead><tr><th>Status</th><th>Significatio</th></tr></thead>
+      <tbody>
+        <tr><td>NOVUM</td><td>nondum in commercium inscriptum</td></tr>
+        <tr><td>IN_COMMERCIO</td><td>inscriptum et usuabile</td></tr>
+        <tr><td>SUBLATUM</td><td>furto ablatum; dominium in controversia</td></tr>
+        <tr><td>DAMNUM</td><td>damnum totale, nulla recuperatio</td></tr>
+        <tr><td>EXPORTATUM</td><td>in exteras terras exportatum</td></tr>
+        <tr><td>DEMOLITUM</td><td>ad demolitionem redactum</td></tr>
+      </tbody>
+    </table>
+    <p>Matrix eventuum plena (rates exempli causa):</p>
+    <table>
+      <thead><tr><th>Eventus</th><th>Ante</th><th>Post</th><th>Tributum</th><th>Solvens</th></tr></thead>
+      <tbody>
+        <tr><td>EMPTIO</td><td>–</td><td>IN_COMMERCIO</td><td>17%</td><td>emptor</td></tr>
+        <tr><td>VENDITIO</td><td>IN_COMMERCIO</td><td>IN_COMMERCIO</td><td>16%</td><td>venditor</td></tr>
+        <tr><td>FURTUM</td><td>IN_COMMERCIO</td><td>SUBLATUM</td><td>0%</td><td>–</td></tr>
+        <tr><td>RECUPERATIO</td><td>SUBLATUM</td><td>IN_COMMERCIO</td><td>0%</td><td>–</td></tr>
+        <tr><td>VENDITIO (sublati)</td><td>SUBLATUM</td><td>–</td><td>0%</td><td>–</td></tr>
+        <tr><td>DAMNUM_TOTUM</td><td>IN_COMMERCIO</td><td>DAMNUM</td><td>0%</td><td>–</td></tr>
+        <tr><td>ASSEGURATIO</td><td>SUBLATUM / DAMNUM</td><td>idem</td><td>0%</td><td>–</td></tr>
+        <tr><td>EXPORTATIO</td><td>IN_COMMERCIO</td><td>EXPORTATUM</td><td>0% / restitutio</td><td>–</td></tr>
+        <tr><td>DEMOLITIO</td><td>IN_COMMERCIO</td><td>DEMOLITUM</td><td>0%</td><td>–</td></tr>
+      </tbody>
+    </table>
+
+    <h3 id="furtum">3.1. Furtum et casus coniuncti</h3>
+    <p>Furtum per se <strong>non est eventus tributarius</strong>: nulla est compensatio, nullum negotium. Sed statum mutat, et ex eo momento quilibet eventus ulterior aliam regulam sequitur. Quinque casus in usu sunt:</p>
+    <table>
+      <thead><tr><th>#</th><th>Casus</th><th>Tributum</th><th>Quis periculum sustinet</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Venditum, nondum inscriptum, deinde sublatum</td><td>0% (inscriptio non facta est)</td><td>emptor, secundum regulas solutionis</td></tr>
+        <tr><td>2</td><td>Sublatum, deinde a fure venditum</td><td>0% (negotium nullum)</td><td>fur; emptor bonae fidei dominium rei sublatae non acquirit</td></tr>
+        <tr><td>3</td><td>Sublatum, non recuperatum, assecurator solvit</td><td>0% (compensatio, non basis tributi)</td><td>assecurator</td></tr>
+        <tr><td>4</td><td>Recuperatum, deinde venditum</td><td>16% (venditio ordinaria)</td><td>emptor</td></tr>
+        <tr><td>5</td><td>In exteras terras exportatum</td><td>0%, restitutio pro parte tributi emptionis</td><td>civitas destinationis tributa imponit</td></tr>
+      </tbody>
+    </table>
+    <p>Maximum consilium est: quid fiat <strong>tributo emptionis iam soluto</strong> in furto? Tres optiones: restitutio, compensatio cum autocineto proximo, aut perditio. Conceptus <strong>compensationem</strong> suadet, quia furtum simulatum non elicit et aerarium restitutione statim non onerat.</p>
+
+    <h2 id="usitatum"><span class="num">4.</span>Autocinetum usitatum</h2>
+    <p>„Usitatum” <strong>non est status cursus vitae</strong>, sed <strong>attributum</strong>. Si status separatus esset, graphum exploderet: USITATUM, USITATUM_SUBLATUM, USITATUM_DAMNUM, USITATUM_EXPORTATUM et cetera. Ideo LTG id ut attributum tractat:</p>
+<pre><code>LTG:AUTOCINETUM
+  condicio = novum | usitatum
+  aetas    = 0..N anni
+  dominus  = privatus | societas | assecurator</code></pre>
+    <p>Graphum idem manet; sola <strong>rata parametrisatur</strong>:</p>
+    <table>
+      <thead><tr><th>Status</th><th>condicio</th><th>Rata exempli (emptio / venditio)</th></tr></thead>
+      <tbody>
+        <tr><td>NOVUM</td><td>novum</td><td>17% / 16%</td></tr>
+        <tr><td>IN_COMMERCIO</td><td>usitatum, 0–3 anni</td><td>14% / 13%</td></tr>
+        <tr><td>IN_COMMERCIO</td><td>usitatum, 3–8 anni</td><td>11% / 10%</td></tr>
+        <tr><td>IN_COMMERCIO</td><td>usitatum, 8+ anni</td><td>7% / 6%</td></tr>
+      </tbody>
+    </table>
+    <p>Valores exempli causa sunt; rates definitivae simulationem requirunt. Summa est structura: <strong>unum graphum, ratis parametrisatis</strong>, non separata machina statuum pro unaquaque aetate.</p>
+
+    <h2 id="exsecutio"><span class="num">5.</span>Exsecutio</h2>
+    <p>„Tributum non solvere → carcer unius ad tres annos aut 10 000 dollariorum” improportionale et sumptuosum est. Carcer quotannis multa milia forintorum constat, cum debitum saepe minus sit. Loco eius scala automatica et gradata:</p>
+<pre><code>0. aestimatio automatica
+1. commemoratio octo dierum
+2. solutio per partes triginta dierum
+3. pignus / cessio mercedis
+4. suspensio inscriptionis aut licentiae operandi
+5. obstructio bonorum
+6. gradus criminalis: solum ob occultationem dolosam, supra limitem altum</code></pre>
+    <p>Sic carcer non <strong>debiti tributarii</strong>, sed <strong>fraudis</strong> poena erit. Hoc iuridice defendi potest, minus constat, et vectigalia melius tuetur, quia exsecutio bonorum celerior est quam iudicium criminale.</p>
+
+    <h2 id="corpus"><span class="num">6.</span>Structura corporis iuris</h2>
+    <p>Totum corpus iuris in unam machinam statuum redigi non potest: magna pars iuris definitiones, principia, proceduras et institutiones continet, non eventus. Ideo quinque strata necessaria sunt:</p>
+    <table>
+      <thead><tr><th>Stratum</th><th>Forma</th><th>Contentum</th></tr></thead>
+      <tbody>
+        <tr><td>1. Textus</td><td>Akoma Ntoso XML</td><td>pars, paragraphus, emendatio, structura</td></tr>
+        <tr><td>2. Norma</td><td>JSON-LD</td><td>actor, actus, condicio, consequentia</td></tr>
+        <tr><td>3. Eventus–Status</td><td>LTG JSON</td><td>status, transitus, normae tributi</td></tr>
+        <tr><td>4. Poena</td><td>JSON</td><td>scala exsecutionis, limites</td></tr>
+        <tr><td>5. Relatio</td><td>graphum (RDF / Neo4j)</td><td>lex → lex</td></tr>
+      </tbody>
+    </table>
+    <p>XML non est obsoletum: <strong>Akoma Ntoso (OASIS LegalDocML)</strong> est norma internationalis legum. At non est forma apta grapho eventuum. Ideo textus in XML, semantica in JSON-LD vivit, et duo relationibus coniunguntur.</p>
+    <p>Transitus in JSON-LD:</p>
+<pre><code>{
+  "@type": "LTGTransition",
+  "object": "LTG:AUTOCINETUM",
+  "from": "IN_COMMERCIO",
+  "event": "VENDITIO",
+  "to": "IN_COMMERCIO",
+  "condition": { "condition": "usitatum" },
+  "tax": { "base": "pretium", "rate": 0.13, "payer": "venditor" }
+}</code></pre>
+    <p>Stratum normae ex textu quadruplicem <strong>actor + eventus + condicio + consequentia</strong> extrahit. Hoc ope modeli linguae semiautomatice fieri potest; ClauseLM localis candidatus aptus est. Iurisconsultus extractionem validare debet, quia condicio male intellecta tributum falsum producit.</p>
+
+    <h2 id="civitates"><span class="num">7.</span>Plures civitates</h2>
+    <p>Modelus ad plures civitates extendi potest, sed <strong>meta-schemate</strong>:</p>
+<pre><code>LTG core        → eventus communes: EMPTIO, VENDITIO, FURTUM, POSSESSIO, EXPORTATIO
+LTG:HU:AUTOCINETUM → rates Hungaricae, poenae Hungaricae
+LTG:DE:AUTOCINETUM → rates Germanicae
+LTG:EU:AUTOCINETUM → minimum Unionis</code></pre>
+    <table>
+      <thead><tr><th>Elementum</th><th>HU</th><th>DE</th><th>EU</th></tr></thead>
+      <tbody>
+        <tr><td>eventus</td><td>core commune</td><td>core commune</td><td>core commune</td></tr>
+        <tr><td>rates</td><td>parameter nationalis</td><td>parameter nationalis</td><td>minimum / fascia</td></tr>
+        <tr><td>poenae</td><td>scala nationalis</td><td>scala nationalis</td><td>framework</td></tr>
+        <tr><td>lingua</td><td>Hungarica</td><td>Germanica</td><td>Anglica</td></tr>
+      </tbody>
+    </table>
+    <p>Difficultas non in schemate, sed in lingua iuridica, differentiis conceptualibus et licentiis datorum est. Ideo incipiendum est cum <strong>HU</strong>, deinde ius Unionis, tum altera civitas (AT aut DE).</p>
+
+    <h2 id="cursus"><span class="num">8.</span>Cursus operis</h2>
+    <table>
+      <thead><tr><th>Phase</th><th>Contentum</th><th>Effectus</th><th>Aestimatio</th></tr></thead>
+      <tbody>
+        <tr><td>0</td><td>schema LTG + normae perficere</td><td>ltg-core.yaml</td><td>1 hebdomas</td></tr>
+        <tr><td>1</td><td>pilotus AUTOCINETI: 20–50 praescripta</td><td>matrix eventuum operans</td><td>2–3 hebdomades</td></tr>
+        <tr><td>2</td><td>extractio semiautomatica</td><td>5–10 milia normarum</td><td>1–2 menses</td></tr>
+        <tr><td>3</td><td>corpus plenum + validatio</td><td>graphum LTG</td><td>3–6 menses</td></tr>
+        <tr><td>4</td><td>altera civitas / EU</td><td>multi-iurisdictio</td><td>6–12 menses</td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="exemplum"><span class="num">9.</span>Vita autocineti – exemplum</h2>
+    <p>Autocinetum novum pretii 10 000 000 forintorum sumamus. Emptor id emit, post duos annos vendit, deinde furto aufertur, recuperatur, et post quattuor annos iterum venditur.</p>
+    <table>
+      <thead><tr><th>#</th><th>Eventus</th><th>Pretium / valor</th><th>Rata</th><th>Tributum</th><th>Solvens</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>EMPTIO (novum)</td><td>10 000 000</td><td>17%</td><td>1 700 000</td><td>emptor</td></tr>
+        <tr><td>2</td><td>VENDITIO (usitatum, 2 anni)</td><td>8 000 000</td><td>13%</td><td>1 040 000</td><td>venditor</td></tr>
+        <tr><td>3</td><td>FURTUM</td><td>–</td><td>0%</td><td>0</td><td>–</td></tr>
+        <tr><td>4</td><td>RECUPERATIO</td><td>–</td><td>0%</td><td>0</td><td>–</td></tr>
+        <tr><td>5</td><td>VENDITIO (usitatum, 4 anni)</td><td>6 000 000</td><td>10%</td><td>600 000</td><td>venditor</td></tr>
+        <tr><td>–</td><td><strong>Summa</strong></td><td>–</td><td>–</td><td><strong>3 340 000</strong></td><td>–</td></tr>
+      </tbody>
+    </table>
+    <p>Tributum per cursum vitae collectum est 33,4% pretii initialis. Comparatione: hodiernum tributum valore additum 27% in prima venditione 2,7 miliones forintorum est, venditiones usitatae fere immunes sunt. LTG igitur onus totale non necessario auget – illud per cursum vitae <strong>redistribuit</strong>. Effectus verus ab elasticitate numeri transactionum pendet: si rates 13–17% venditiones minuunt, et vectigalia et compositio classis mutantur.</p>
+
+    <h2 id="pericula"><span class="num">10.</span>Pericula</h2>
+    <ul>
+      <li><strong>Validatio iuridica:</strong> omnis norma extracta ab iurisconsulto inspicienda est.</li>
+      <li><strong>Qualitas datorum:</strong> corpus fontis fragmendum est; partes absentes imaginem falsam dare possunt.</li>
+      <li><strong>Effectus morum:</strong> rates transactionum altae mercatum legitimum minuere possunt.</li>
+      <li><strong>Licentia datorum:</strong> corpus cuiusque civitatis aliis condicionibus utendum est.</li>
+      <li><strong>Administratio mutationum:</strong> leges continenter mutantur; graphum versionibus instruendum est.</li>
+    </ul>
+
+    <h2 id="summa"><span class="num">11.</span>Summa</h2>
+    <p>LTG non est lex, sed <strong>stratum descriptionis</strong>: cursum vitae rerum ut machinam statuum repraesentat, tributa autem ut regulas transituum inter status. Eodem modeli tractantur autocinetum novum et usitatum, furtum et exportatio, rates Hungaricae et Germanicae. Textus iuridicus in XML manet, semantica in JSON-LD, et duo relationibus coniunguntur.</p>
+    <p>Proximus gradus est <strong>pilotus AUTOCINETI</strong>: 20–50 praescripta tractare, matrice eventuum plenam delineare, rates simulare. Si hoc operatur, exemplum ad corpus plenum et plures civitates extendi potest.</p>
+
+    <div class="callout">
+      <h3>Descriptio</h3>
+      <p>Editio impressa conceptus pleni (Hungarice):</p>
+      <a class="download" href="../LTG_koncepcio_v0.2.pdf">LTG_koncepcio_v0.2.pdf</a>
+    </div>
+
+    <div class="callout" id="licentia">
+      <h3>Licentia</h3>
+      <p>Hoc opus sub <strong>LTG Emailware License 1.0</strong> editum est: libere uti, copiare, mutare et distribuere licet, <strong>ea condicione</strong> ut, si eo utaris, brevem epistulam electronicam auctori mittas, qua usum tuum describes.</p>
+      <p>Haec non est licentia aperta OSI probata, quia praeter attributionem officium notificationis imponit. Textus plenus: <a href="../license.xhtml">LICENSE</a>.</p>
+    </div>
+
+  </main>
+
+  <footer class="site">
+    <p>LTG – Graphum Tributarium Vitae · conceptus v0.2 · 2026 · <a href="../license.xhtml">LTG Emailware License 1.0</a></p>
+    <p>Exemplar laboris. Non est consilium iuridicum. Rates exempli causa sunt.</p>
+  </footer>
+
+</div>
+</body>
+</html>

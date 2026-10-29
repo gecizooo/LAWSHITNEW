@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LTG – Lifecycle Tax Graph | Concept v0.2</title>
+  <meta name="description" content="LTG: an event- and state-based tax model. Concept and car case study." />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+  <link rel="icon" href="../favicon.ico" sizes="any" />
+  <link rel="stylesheet" href="../assets/style.css" />
+</head>
+<body>
+<div class="wrap">
+
+  <header class="site">
+    <nav class="lang" aria-label="Language">
+      <a href="../index.xhtml" xml:lang="hu" lang="hu">Magyar</a>
+      <a href="index.xhtml" aria-current="page" xml:lang="en" lang="en">English</a>
+      <a href="../la/index.xhtml" xml:lang="la" lang="la">Latina</a>
+    </nav>
+
+    <h1>LTG – Lifecycle Tax Graph</h1>
+    <p class="subtitle">Concept and case study</p>
+    <p class="meta">v0.2 · 29 October 2026 · working draft</p>
+
+    <p class="lead">Every tax can be reduced to two events – possession (<em>stock</em>) and movement (<em>flow</em>) – and every asset can be described as a state machine in which each transition carries a tax rule.</p>
+  </header>
+
+  <main>
+
+    <h2 id="problem"><span class="num">1.</span>The problem</h2>
+    <p>Today’s tax and registration systems are <strong>text-centric</strong>. Rules live scattered across statutes, annexes and amendments. The same asset – a car, for instance – passes through several tax types over its lifetime: VAT, registration tax, motor vehicle tax, transaction duty. The rules describe separately what happens on purchase, sale, theft, export and scrapping.</p>
+    <p>This makes four things hard:</p>
+    <ul>
+      <li>answering what tax is due in a concrete case,</li>
+      <li>simulating the effect of a reform,</li>
+      <li>making the body of law machine-readable,</li>
+      <li>comparing countries.</li>
+    </ul>
+    <p>LTG introduces no new tax. It provides a <strong>new way of describing</strong> the existing rules. Legal force continues to come from the underlying statute; LTG merely represents the same rule in a single, verifiable model.</p>
+
+    <h2 id="model"><span class="num">2.</span>The core model</h2>
+    <p>LTG rests on two primitives:</p>
+    <ul>
+      <li><strong>STOCK</strong> – possession of the object at a point in time; typically an annual tax.</li>
+      <li><strong>FLOW</strong> – transfer of the object; typically a transaction tax.</li>
+    </ul>
+    <p>A third, non-tax element joins them: the <strong>state</strong>. The object’s lifecycle is a finite state machine:</p>
+<pre><code>NEW ──BUY──► IN_CIRCULATION ──SELL──► IN_CIRCULATION
+                 │
+                 ├── THEFT ─────► STOLEN ──RECOVERY──► IN_CIRCULATION
+                 │                   └── not recovered ──► LOSS
+                 ├── TOTAL_LOSS ─► LOSS
+                 ├── EXPORT ─────► EXPORTED
+                 └── SCRAP ──────► SCRAPPED</code></pre>
+    <p>Every arrow is a <strong>transition</strong>, and every transition carries a <strong>tax rule</strong>. The rule has these fields:</p>
+    <table>
+      <thead><tr><th>Field</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td>base</td><td>what the tax applies to (price, value, power)</td></tr>
+        <tr><td>rate</td><td>percentage or fixed amount</td></tr>
+        <tr><td>payer</td><td>who is legally liable</td></tr>
+        <tr><td>bearer</td><td>who actually bears it</td></tr>
+        <tr><td>due</td><td>when it becomes due</td></tr>
+        <tr><td>exemption</td><td>exceptions</td></tr>
+        <tr><td>sanction</td><td>what happens on non-payment</td></tr>
+      </tbody>
+    </table>
+    <p>The notation used for references in this document:</p>
+<pre><code>LTG:CAR.IN_CIRCULATION --SELL--&gt; LTG:CAR.IN_CIRCULATION [16%, seller]
+LTG:CAR.IN_CIRCULATION --THEFT--&gt; LTG:CAR.STOLEN [0%, no tax]
+LTG:CAR.STOLEN --RECOVERY--&gt; LTG:CAR.IN_CIRCULATION [0%, no tax]</code></pre>
+
+    <h2 id="car"><span class="num">3.</span>CAR case study</h2>
+    <p>CAR is the first instance of the model. Its states and events:</p>
+    <table>
+      <thead><tr><th>State</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td>NEW</td><td>not yet registered for circulation</td></tr>
+        <tr><td>IN_CIRCULATION</td><td>registered and usable</td></tr>
+        <tr><td>STOLEN</td><td>stolen; title in dispute</td></tr>
+        <tr><td>LOSS</td><td>total loss, no recovery</td></tr>
+        <tr><td>EXPORTED</td><td>exported abroad</td></tr>
+        <tr><td>SCRAPPED</td><td>dismantled</td></tr>
+      </tbody>
+    </table>
+    <p>The full event matrix (rates are illustrative):</p>
+    <table>
+      <thead><tr><th>Event</th><th>Before</th><th>After</th><th>Tax</th><th>Payer</th></tr></thead>
+      <tbody>
+        <tr><td>BUY</td><td>–</td><td>IN_CIRCULATION</td><td>17%</td><td>buyer</td></tr>
+        <tr><td>SELL</td><td>IN_CIRCULATION</td><td>IN_CIRCULATION</td><td>16%</td><td>seller</td></tr>
+        <tr><td>THEFT</td><td>IN_CIRCULATION</td><td>STOLEN</td><td>0%</td><td>–</td></tr>
+        <tr><td>RECOVERY</td><td>STOLEN</td><td>IN_CIRCULATION</td><td>0%</td><td>–</td></tr>
+        <tr><td>SELL (stolen)</td><td>STOLEN</td><td>–</td><td>0%</td><td>–</td></tr>
+        <tr><td>TOTAL_LOSS</td><td>IN_CIRCULATION</td><td>LOSS</td><td>0%</td><td>–</td></tr>
+        <tr><td>INSURANCE</td><td>STOLEN / LOSS</td><td>unchanged</td><td>0%</td><td>–</td></tr>
+        <tr><td>EXPORT</td><td>IN_CIRCULATION</td><td>EXPORTED</td><td>0% / refund</td><td>–</td></tr>
+        <tr><td>SCRAP</td><td>IN_CIRCULATION</td><td>SCRAPPED</td><td>0%</td><td>–</td></tr>
+      </tbody>
+    </table>
+
+    <h3 id="theft">3.1. Theft and related scenarios</h3>
+    <p>Theft is not a taxable event in itself: there is no consideration and no transaction. But it changes the state, and from that point every further event follows a different rule. Five cases matter in practice:</p>
+    <table>
+      <thead><tr><th>#</th><th>Scenario</th><th>Tax</th><th>Who bears the risk</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Sold but not yet re-registered, then stolen</td><td>0% (registration did not occur)</td><td>the buyer, under the rules of performance</td></tr>
+        <tr><td>2</td><td>Stolen, then sold by the thief</td><td>0% (the transaction is void)</td><td>the thief; a good-faith buyer does not acquire title to stolen property</td></tr>
+        <tr><td>3</td><td>Stolen, not recovered, insurer pays</td><td>0% (compensation, not a tax base)</td><td>the insurer</td></tr>
+        <tr><td>4</td><td>Recovered, then sold</td><td>16% (ordinary sale)</td><td>the buyer</td></tr>
+        <tr><td>5</td><td>Taken abroad</td><td>0%, pro-rata refund of the purchase tax</td><td>the destination country taxes it</td></tr>
+      </tbody>
+    </table>
+    <p>The key design decision is what happens to the <strong>purchase tax already paid</strong> when the car is stolen. There are three options: refund, credit against the next car, or forfeiture. The concept recommends a <strong>credit</strong>, because it does not encourage staged thefts and does not burden the budget with immediate refunds.</p>
+
+    <h2 id="used"><span class="num">4.</span>Used cars</h2>
+    <p>“Used” is <strong>not a lifecycle state</strong> but an <strong>attribute</strong>. Treating it as a state would explode the graph: USED, USED_STOLEN, USED_LOSS, USED_EXPORTED and so on. LTG therefore keeps it as an attribute:</p>
+<pre><code>LTG:CAR
+  condition = new | used
+  age       = 0..N years
+  owner     = private | company | insurer</code></pre>
+    <p>The graph stays the same; only the <strong>rate is parameterised</strong>:</p>
+    <table>
+      <thead><tr><th>State</th><th>condition</th><th>Example rate (buy / sell)</th></tr></thead>
+      <tbody>
+        <tr><td>NEW</td><td>new</td><td>17% / 16%</td></tr>
+        <tr><td>IN_CIRCULATION</td><td>used, 0–3 years</td><td>14% / 13%</td></tr>
+        <tr><td>IN_CIRCULATION</td><td>used, 3–8 years</td><td>11% / 10%</td></tr>
+        <tr><td>IN_CIRCULATION</td><td>used, 8+ years</td><td>7% / 6%</td></tr>
+      </tbody>
+    </table>
+    <p>The figures are illustrative; final rates require simulation. The point is the structure: <strong>one graph with parameterised rates</strong>, not a separate state machine for every age bracket.</p>
+
+    <h2 id="enforcement"><span class="num">5.</span>Enforcement</h2>
+    <p>“Non-payment → 1–3 years in prison or USD 10,000” is disproportionate and expensive. Prison costs millions of forints per year, while the debt is often smaller. Instead, an automatic, graduated ladder:</p>
+<pre><code>0. automatic assessment
+1. 8-day reminder
+2. 30-day instalment plan
+3. lien / wage garnishment
+4. suspension of registration or operating licence
+5. asset freeze
+6. criminal stage: only for intentional concealment, above a high threshold</code></pre>
+    <p>Prison thus becomes the sanction for <strong>fraud</strong>, not for <strong>tax debt</strong>. This is more defensible legally, cheaper, and protects revenue better, because asset enforcement is faster than criminal proceedings.</p>
+
+    <h2 id="law"><span class="num">6.</span>Structuring the body of law</h2>
+    <p>The entire legal code cannot be compressed into a single state machine: much of law consists of definitions, principles, procedures and institutions, not events. Five layers are needed:</p>
+    <table>
+      <thead><tr><th>Layer</th><th>Format</th><th>Content</th></tr></thead>
+      <tbody>
+        <tr><td>1. Text</td><td>Akoma Ntoso XML</td><td>section, paragraph, amendment, structure</td></tr>
+        <tr><td>2. Norm</td><td>JSON-LD</td><td>actor, act, condition, consequence</td></tr>
+        <tr><td>3. Event–state</td><td>LTG JSON</td><td>states, transitions, tax rules</td></tr>
+        <tr><td>4. Sanction</td><td>JSON</td><td>enforcement ladder, thresholds</td></tr>
+        <tr><td>5. Reference</td><td>graph (RDF / Neo4j)</td><td>statute → statute</td></tr>
+      </tbody>
+    </table>
+    <p>XML is not obsolete: <strong>Akoma Ntoso (OASIS LegalDocML)</strong> is the international standard for legislation. It is not, however, the right format for the event graph. The text therefore lives in XML, the semantics in JSON-LD, and the two are linked by references.</p>
+    <p>A transition in JSON-LD:</p>
+<pre><code>{
+  "@type": "LTGTransition",
+  "object": "LTG:CAR",
+  "from": "IN_CIRCULATION",
+  "event": "SELL",
+  "to": "IN_CIRCULATION",
+  "condition": { "condition": "used" },
+  "tax": { "base": "price", "rate": 0.13, "payer": "seller" }
+}</code></pre>
+    <p>The norm layer extracts the quadruple <strong>actor + event + condition + consequence</strong> from the text. This can be done semi-automatically with a language model; the local ClauseLM is a good candidate. A lawyer must validate the extraction, because a misunderstood condition produces the wrong tax.</p>
+
+    <h2 id="countries"><span class="num">7.</span>Multiple countries</h2>
+    <p>The model can be extended to several countries through a <strong>meta-schema</strong>:</p>
+<pre><code>LTG core        → shared events: BUY, SELL, THEFT, HOLD, EXPORT
+LTG:HU:CAR      → Hungarian rates, Hungarian sanctions
+LTG:DE:CAR      → German rates
+LTG:EU:CAR      → EU minimum</code></pre>
+    <table>
+      <thead><tr><th>Element</th><th>HU</th><th>DE</th><th>EU</th></tr></thead>
+      <tbody>
+        <tr><td>events</td><td>shared core</td><td>shared core</td><td>shared core</td></tr>
+        <tr><td>rates</td><td>national parameter</td><td>national parameter</td><td>minimum / band</td></tr>
+        <tr><td>sanctions</td><td>national ladder</td><td>national ladder</td><td>framework</td></tr>
+        <tr><td>language</td><td>Hungarian</td><td>German</td><td>English</td></tr>
+      </tbody>
+    </table>
+    <p>The challenge is not the schema but legal language, conceptual differences and data licences. It is therefore best to start with <strong>HU</strong>, then EU law, then a second country (AT or DE).</p>
+
+    <h2 id="roadmap"><span class="num">8.</span>Roadmap</h2>
+    <table>
+      <thead><tr><th>Phase</th><th>Content</th><th>Output</th><th>Estimate</th></tr></thead>
+      <tbody>
+        <tr><td>0</td><td>Finalise LTG + norm schema</td><td>ltg-core.yaml</td><td>1 week</td></tr>
+        <tr><td>1</td><td>CAR pilot: 20–50 provisions</td><td>working event matrix</td><td>2–3 weeks</td></tr>
+        <tr><td>2</td><td>Semi-automatic extraction</td><td>5–10 thousand norms</td><td>1–2 months</td></tr>
+        <tr><td>3</td><td>Full corpus + validation</td><td>LTG graph</td><td>3–6 months</td></tr>
+        <tr><td>4</td><td>Second country / EU</td><td>multi-jurisdiction</td><td>6–12 months</td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="example"><span class="num">9.</span>Life of a car – a worked example</h2>
+    <p>Take a new car priced at HUF 10 million. The buyer purchases it, sells it two years later, it is stolen, recovered, and sold again four years later.</p>
+    <table>
+      <thead><tr><th>#</th><th>Event</th><th>Price / value</th><th>Rate</th><th>Tax</th><th>Payer</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>BUY (new)</td><td>10,000,000</td><td>17%</td><td>1,700,000</td><td>buyer</td></tr>
+        <tr><td>2</td><td>SELL (used, 2 years)</td><td>8,000,000</td><td>13%</td><td>1,040,000</td><td>seller</td></tr>
+        <tr><td>3</td><td>THEFT</td><td>–</td><td>0%</td><td>0</td><td>–</td></tr>
+        <tr><td>4</td><td>RECOVERY</td><td>–</td><td>0%</td><td>0</td><td>–</td></tr>
+        <tr><td>5</td><td>SELL (used, 4 years)</td><td>6,000,000</td><td>10%</td><td>600,000</td><td>seller</td></tr>
+        <tr><td>–</td><td><strong>Total</strong></td><td>–</td><td>–</td><td><strong>3,340,000</strong></td><td>–</td></tr>
+      </tbody>
+    </table>
+    <p>The tax collected over the lifecycle is 33.4% of the initial price. By comparison, today’s 27% VAT at first sale is HUF 2.7 million, while used sales are practically tax-free. LTG therefore does not necessarily increase the total burden – it <strong>redistributes</strong> it along the lifecycle. The actual effect depends on the elasticity of transaction volumes: if the 13–17% rates reduce sales, both revenue and fleet composition change.</p>
+
+    <h2 id="risks"><span class="num">10.</span>Risks</h2>
+    <ul>
+      <li><strong>Legal validation:</strong> every extracted norm must be checked by a lawyer.</li>
+      <li><strong>Data quality:</strong> the source corpus is fragmentary; missing sections can give a false picture.</li>
+      <li><strong>Behavioural effect:</strong> high transaction rates may suppress the legal market.</li>
+      <li><strong>Data licensing:</strong> each country’s corpus comes with different terms.</li>
+      <li><strong>Change management:</strong> legislation changes constantly; the graph must be versioned.</li>
+    </ul>
+
+    <h2 id="summary"><span class="num">11.</span>Summary</h2>
+    <p>LTG is not legislation but a <strong>description layer</strong>: it represents the lifecycle of assets as a state machine, and taxes as rules attached to transitions between states. The same model handles new and used cars, theft and export, Hungarian and German rates. The legal text continues to live in XML, the semantics in JSON-LD, and references connect the two.</p>
+    <p>The next step is the <strong>CAR pilot</strong>: processing 20–50 provisions, drawing the full event matrix and simulating the rates. If that works, the pattern can be extended to the full corpus and to multiple countries.</p>
+
+    <div class="callout">
+      <h3>Download</h3>
+      <p>The print edition of the full concept (Hungarian):</p>
+      <a class="download" href="../LTG_koncepcio_v0.2.pdf">LTG_koncepcio_v0.2.pdf</a>
+    </div>
+
+    <div class="callout" id="license">
+      <h3>Licence</h3>
+      <p>This work is released under the <strong>LTG Emailware License 1.0</strong>: you may use, copy, modify and distribute it freely, <strong>on condition</strong> that, if you use it, you send a short email to the author describing what you use it for.</p>
+      <p>This is not an OSI-approved open-source licence, because it imposes a notification duty beyond attribution. Full text: <a href="../license.xhtml">LICENSE</a>.</p>
+    </div>
+
+  </main>
+
+  <footer class="site">
+    <p>LTG – Lifecycle Tax Graph · concept v0.2 · 2026 · <a href="../license.xhtml">LTG Emailware License 1.0</a></p>
+    <p>Working draft. Not legal advice. Rates in examples are illustrative.</p>
+  </footer>
+
+</div>
+</body>
+</html>

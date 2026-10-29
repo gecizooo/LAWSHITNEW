@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="hu" lang="hu">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LTG – Életciklus-adógráf | Koncepció v0.2</title>
+  <meta name="description" content="LTG: esemény- és állapotalapú adómodell. Koncepció és autó-esettanulmány." />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+<div class="wrap">
+
+  <header class="site">
+    <nav class="lang" aria-label="Nyelv">
+      <a href="index.xhtml" aria-current="page" xml:lang="hu" lang="hu">Magyar</a>
+      <a href="en/index.xhtml" xml:lang="en" lang="en">English</a>
+      <a href="la/index.xhtml" xml:lang="la" lang="la">Latina</a>
+    </nav>
+
+    <h1>LTG – Életciklus-adógráf</h1>
+    <p class="subtitle">Koncepció és esettanulmány</p>
+    <p class="meta">v0.2 · 2026. október 29. · munkapéldány</p>
+
+    <p class="lead">Minden adó két eseményre redukálható – birtoklás (<em>stock</em>) és mozgás (<em>flow</em>) –, a vagyontárgyakat pedig állapotgépként írjuk le, ahol minden átmenethez adószabály tartozik.</p>
+  </header>
+
+  <main>
+
+    <h2 id="problema"><span class="num">1.</span>A probléma</h2>
+    <p>A mai adó- és nyilvántartási rendszer <strong>szövegközpontú</strong>. A szabályok jogszabályokban, mellékletekben és módosításokban szétszórva élnek. Ugyanaz a vagyontárgy – például egy autó – az életútja során több adónemen megy át: áfa, regisztrációs adó, gépjárműadó, tranzakciós illeték. A szabályok külön-külön írják le, mi történik vételkor, eladáskor, lopáskor, exportkor, bontáskor.</p>
+    <p>Ez négy dolgot nehezít meg:</p>
+    <ul>
+      <li>egy konkrét eset adóterhének megválaszolását,</li>
+      <li>egy reform hatásának szimulálását,</li>
+      <li>a joganyag géppel olvashatóvá tételét,</li>
+      <li>országok közötti összevetését.</li>
+    </ul>
+    <p>Az LTG nem új adót vezet be, hanem <strong>új leírási módot</strong> ad a meglévő szabályok fölé. A jogi kötelező erőt továbbra is a mögötte álló jogszabály adja; az LTG annyit tesz, hogy ugyanazt a szabályt egyetlen, ellenőrizhető modellben ábrázolja.</p>
+
+    <h2 id="magmodell"><span class="num">2.</span>A magmodell</h2>
+    <p>Az LTG két primitívre épül:</p>
+    <ul>
+      <li><strong>STOCK</strong> – az objektum birtoklása egy időpontban; jellemzően éves adó.</li>
+      <li><strong>FLOW</strong> – az objektum átruházása; jellemzően tranzakciós adó.</li>
+    </ul>
+    <p>Ehhez jön a harmadik, nem adózási elem: az <strong>állapot</strong>. Az objektum életciklusa véges állapotgép:</p>
+<pre><code>ÚJ ──BUY──► FORGALOMBAN ──SELL──► FORGALOMBAN
+                 │
+                 ├── THEFT ─────► LOPOTT ──RECOVERY──► FORGALOMBAN
+                 │                    └── nem kerül meg ──► KÁR
+                 ├── TOTAL_LOSS ─► KÁR
+                 ├── EXPORT ─────► KIVITT
+                 └── SCRAP ──────► BONTOTT</code></pre>
+    <p>Minden nyíl egy <strong>átmenet</strong>, és minden átmenethez egy <strong>adószabály</strong> tartozik. A szabály mezői:</p>
+    <table>
+      <thead><tr><th>Mező</th><th>Jelentés</th></tr></thead>
+      <tbody>
+        <tr><td>alap</td><td>mire vetül az adó (vételár, érték, teljesítmény)</td></tr>
+        <tr><td>kulcs</td><td>százalék vagy fix összeg</td></tr>
+        <tr><td>fizető</td><td>aki jogilag fizet</td></tr>
+        <tr><td>viselő</td><td>aki ténylegesen viseli</td></tr>
+        <tr><td>esedékesség</td><td>mikor válik esedékessé</td></tr>
+        <tr><td>mentesség</td><td>kivételek</td></tr>
+        <tr><td>szankció</td><td>mi történik nem fizetéskor</td></tr>
+      </tbody>
+    </table>
+    <p>A jelölés, amivel a dokumentumban hivatkozni lehet:</p>
+<pre><code>LTG:CAR.FORGALOMBAN --SELL--&gt; LTG:CAR.FORGALOMBAN [16%, eladó]
+LTG:CAR.FORGALOMBAN --THEFT--&gt; LTG:CAR.LOPOTT [0%, nincs adó]
+LTG:CAR.LOPOTT --RECOVERY--&gt; LTG:CAR.FORGALOMBAN [0%, nincs adó]</code></pre>
+
+    <h2 id="car"><span class="num">3.</span>CAR esettanulmány</h2>
+    <p>A CAR a modell első példánya. Állapotai és eseményei:</p>
+    <table>
+      <thead><tr><th>Állapot</th><th>Jelentés</th></tr></thead>
+      <tbody>
+        <tr><td>ÚJ</td><td>még nem helyezték forgalomba</td></tr>
+        <tr><td>FORGALOMBAN</td><td>nyilvántartott, használható</td></tr>
+        <tr><td>LOPOTT</td><td>ellopták, a tulajdonjog vitatott</td></tr>
+        <tr><td>KÁR</td><td>teljes kár, nincs helyreállítás</td></tr>
+        <tr><td>KIVITT</td><td>külföldre exportálták</td></tr>
+        <tr><td>BONTOTT</td><td>bontásra került</td></tr>
+      </tbody>
+    </table>
+    <p>A teljes eseménymátrix (a kulcsok illusztratívak):</p>
+    <table>
+      <thead><tr><th>Esemény</th><th>Előtte</th><th>Utána</th><th>Adó</th><th>Fizető</th></tr></thead>
+      <tbody>
+        <tr><td>BUY</td><td>–</td><td>FORGALOMBAN</td><td>17%</td><td>vevő</td></tr>
+        <tr><td>SELL</td><td>FORGALOMBAN</td><td>FORGALOMBAN</td><td>16%</td><td>eladó</td></tr>
+        <tr><td>THEFT</td><td>FORGALOMBAN</td><td>LOPOTT</td><td>0%</td><td>–</td></tr>
+        <tr><td>RECOVERY</td><td>LOPOTT</td><td>FORGALOMBAN</td><td>0%</td><td>–</td></tr>
+        <tr><td>SELL (lopott)</td><td>LOPOTT</td><td>–</td><td>0%</td><td>–</td></tr>
+        <tr><td>TOTAL_LOSS</td><td>FORGALOMBAN</td><td>KÁR</td><td>0%</td><td>–</td></tr>
+        <tr><td>INSURANCE</td><td>LOPOTT / KÁR</td><td>változatlan</td><td>0%</td><td>–</td></tr>
+        <tr><td>EXPORT</td><td>FORGALOMBAN</td><td>KIVITT</td><td>0% / visszatérítés</td><td>–</td></tr>
+        <tr><td>SCRAP</td><td>FORGALOMBAN</td><td>BONTOTT</td><td>0%</td><td>–</td></tr>
+      </tbody>
+    </table>
+
+    <h3 id="lopas">3.1. A lopás és a kapcsolódó forgatókönyvek</h3>
+    <p>A lopás önmagában <strong>nem adóesemény</strong>: nincs ellenérték, nincs ügylet. De megváltoztatja az állapotot, és onnantól minden további eseményre más szabály vonatkozik. A gyakorlatban öt eset számít:</p>
+    <table>
+      <thead><tr><th>#</th><th>Forgatókönyv</th><th>Adó</th><th>Ki viseli a kockázatot</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Eladták, de még nem írták át, és ellopták</td><td>0% (az átírás nem történt meg)</td><td>a teljesítés szabályai szerint a vevő</td></tr>
+        <tr><td>2</td><td>Ellopták, majd a tolvaj eladta</td><td>0% (az ügylet semmis)</td><td>a tolvaj; jóhiszemű vevő nem szerez tulajdont lopott dologban</td></tr>
+        <tr><td>3</td><td>Ellopták, nem kerül meg, a biztosító fizet</td><td>0% (kártérítés, nem adóalap)</td><td>a biztosító</td></tr>
+        <tr><td>4</td><td>Megkerült, majd eladták</td><td>16% (normál eladás)</td><td>a vevő</td></tr>
+        <tr><td>5</td><td>Külföldre vitték</td><td>0%, a vételi adó arányos része visszatéríthető</td><td>a célország adóztat</td></tr>
+      </tbody>
+    </table>
+    <p>A legfontosabb tervezési döntés: a <strong>már befizetett vételi adó</strong> sorsa lopásnál. Három lehetőség van – visszatérítés, jóváírás a következő autóra, vagy elveszik. A koncepció a <strong>jóváírást</strong> javasolja, mert nem ösztönöz színlelt lopásra, és nem terheli a költségvetést azonnali visszatérítéssel.</p>
+
+    <h2 id="hasznalt"><span class="num">4.</span>Használt autó</h2>
+    <p>A „használt” <strong>nem életciklus-állapot</strong>, hanem <strong>tulajdonság</strong>. Ha külön állapotnak vennénk, felrobbanna a gráf: HASZNÁLT, HASZNÁLT_LOPOTT, HASZNÁLT_KÁR, HASZNÁLT_EXPORT és így tovább. Ezért az LTG attribútumként kezeli:</p>
+<pre><code>LTG:CAR
+  condition = new | used
+  age       = 0..N év
+  owner     = magán | cég | biztosító</code></pre>
+    <p>A gráf ugyanaz marad, csak a <strong>kulcs paraméterezett</strong>:</p>
+    <table>
+      <thead><tr><th>Állapot</th><th>condition</th><th>Példakulcs (vétel / eladás)</th></tr></thead>
+      <tbody>
+        <tr><td>ÚJ</td><td>new</td><td>17% / 16%</td></tr>
+        <tr><td>FORGALOMBAN</td><td>used, 0–3 év</td><td>14% / 13%</td></tr>
+        <tr><td>FORGALOMBAN</td><td>used, 3–8 év</td><td>11% / 10%</td></tr>
+        <tr><td>FORGALOMBAN</td><td>used, 8+ év</td><td>7% / 6%</td></tr>
+      </tbody>
+    </table>
+    <p>A táblázat értékei illusztratívak; a végleges kulcsok szimulációt igényelnek. A lényeg a szerkezet: <strong>egy gráf, paraméterezett kulcsokkal</strong>, nem külön állapotgép minden életkorra.</p>
+
+    <h2 id="vegrehajtas"><span class="num">5.</span>Végrehajtás</h2>
+    <p>A „nem fizetés → 1–3 év börtön vagy 10 000 USD” aránytalan és drága. A börtön költsége évente több millió forint, miközben a tartozás gyakran ennél kisebb. Helyette automatikus, fokozatos létra:</p>
+<pre><code>0. automatikus megállapítás
+1. 8 napos emlékeztető
+2. 30 napos részletfizetés
+3. jelzálog / inkasszó
+4. forgalmi engedély vagy működési engedély felfüggesztése
+5. vagyonzár
+6. büntetőjogi szakasz: csak szándékos eltitkolásnál, magas küszöb felett</code></pre>
+    <p>Így a börtön nem az <strong>adótartozás</strong>, hanem a <strong>csalás</strong> szankciója lesz. Ez jogilag védhetőbb, olcsóbb, és a bevételt is jobban védi, mert a vagyoni végrehajtás gyorsabb, mint a büntetőeljárás.</p>
+
+    <h2 id="joganyag"><span class="num">6.</span>A joganyag strukturálása</h2>
+    <p>A teljes törvénykönyvet nem lehet egyetlen állapotgépbe sűríteni: a jog nagy része definíció, alapelv, eljárás és intézmény, nem esemény. Ezért öt réteg kell:</p>
+    <table>
+      <thead><tr><th>Réteg</th><th>Formátum</th><th>Tartalom</th></tr></thead>
+      <tbody>
+        <tr><td>1. Szöveg</td><td>Akoma Ntoso XML</td><td>§, bekezdés, módosítás, szerkezet</td></tr>
+        <tr><td>2. Norma</td><td>JSON-LD</td><td>szereplő, cselekmény, feltétel, következmény</td></tr>
+        <tr><td>3. Esemény–állapot</td><td>LTG JSON</td><td>állapotok, átmenetek, adószabályok</td></tr>
+        <tr><td>4. Szankció</td><td>JSON</td><td>végrehajtási létra, küszöbök</td></tr>
+        <tr><td>5. Hivatkozás</td><td>gráf (RDF / Neo4j)</td><td>jogszabály → jogszabály</td></tr>
+      </tbody>
+    </table>
+    <p>Az XML nem elavult: a <strong>Akoma Ntoso (OASIS LegalDocML)</strong> a jogszabályok nemzetközi szabványa. Viszont nem ez a megfelelő formátum az eseménygráfra. Ezért a szöveg XML-ben, a szemantika JSON-LD-ben él, és a kettő hivatkozással kapcsolódik egymáshoz.</p>
+    <p>Egy átmenet JSON-LD-ben:</p>
+<pre><code>{
+  "@type": "LTGTransition",
+  "object": "LTG:CAR",
+  "from": "FORGALOMBAN",
+  "event": "SELL",
+  "to": "FORGALOMBAN",
+  "condition": { "condition": "used" },
+  "tax": { "base": "price", "rate": 0.13, "payer": "seller" }
+}</code></pre>
+    <p>A norma-réteg feladata, hogy a szövegből kinyerje a <strong>szereplő + esemény + feltétel + következmény</strong> négyest. Ez nyelvi modell segítségével félautomata módon megoldható; a helyi ClauseLM erre jó jelölt. A kinyerést jogász validálja, mert a félreértett feltétel rossz adót eredményez.</p>
+
+    <h2 id="tobb-orszag"><span class="num">7.</span>Több ország</h2>
+    <p>A modell több országra is kiterjeszthető, de <strong>meta-sémával</strong>:</p>
+<pre><code>LTG core        → közös események: BUY, SELL, THEFT, HOLD, EXPORT
+LTG:HU:CAR      → magyar kulcsok, magyar szankciók
+LTG:DE:CAR      → német kulcsok
+LTG:EU:CAR      → uniós minimum</code></pre>
+    <table>
+      <thead><tr><th>Elem</th><th>HU</th><th>DE</th><th>EU</th></tr></thead>
+      <tbody>
+        <tr><td>események</td><td>közös core</td><td>közös core</td><td>közös core</td></tr>
+        <tr><td>kulcsok</td><td>hazai paraméter</td><td>hazai paraméter</td><td>minimum / sáv</td></tr>
+        <tr><td>szankciók</td><td>hazai létra</td><td>hazai létra</td><td>keret</td></tr>
+        <tr><td>nyelv</td><td>magyar</td><td>német</td><td>angol</td></tr>
+      </tbody>
+    </table>
+    <p>A kihívás nem a séma, hanem a jogi nyelv, a fogalmi különbségek és az adatlicencek. Ezért érdemes <strong>HU-val kezdeni</strong>, utána az EU-s jogot, végül egy második országot (AT vagy DE) pilotálni.</p>
+
+    <h2 id="utemterv"><span class="num">8.</span>Ütemterv</h2>
+    <table>
+      <thead><tr><th>Fázis</th><th>Tartalom</th><th>Eredmény</th><th>Becsült idő</th></tr></thead>
+      <tbody>
+        <tr><td>0</td><td>LTG + norma-séma véglegesítése</td><td>ltg-core.yaml</td><td>1 hét</td></tr>
+        <tr><td>1</td><td>CAR-pilot: 20–50 rendelkezés</td><td>működő eseménymátrix</td><td>2–3 hét</td></tr>
+        <tr><td>2</td><td>Félautomata kinyerés</td><td>5–10 ezer norma</td><td>1–2 hónap</td></tr>
+        <tr><td>3</td><td>Teljes korpusz + validáció</td><td>LTG-gráf</td><td>3–6 hónap</td></tr>
+        <tr><td>4</td><td>Második ország / EU</td><td>multi-jurisdiction</td><td>6–12 hónap</td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="pelda"><span class="num">9.</span>Egy autó életútja – végigvezetett példa</h2>
+    <p>Vegyünk egy 10 millió forintos új autót, amelyet a vevő megvásárol, két év múlva elad, majd ellopják, megkerül, és négy évvel később újra eladnak.</p>
+    <table>
+      <thead><tr><th>#</th><th>Esemény</th><th>Ár / érték</th><th>Kulcs</th><th>Adó</th><th>Fizető</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>BUY (new)</td><td>10 000 000</td><td>17%</td><td>1 700 000</td><td>vevő</td></tr>
+        <tr><td>2</td><td>SELL (used, 2 év)</td><td>8 000 000</td><td>13%</td><td>1 040 000</td><td>eladó</td></tr>
+        <tr><td>3</td><td>THEFT</td><td>–</td><td>0%</td><td>0</td><td>–</td></tr>
+        <tr><td>4</td><td>RECOVERY</td><td>–</td><td>0%</td><td>0</td><td>–</td></tr>
+        <tr><td>5</td><td>SELL (used, 4 év)</td><td>6 000 000</td><td>10%</td><td>600 000</td><td>eladó</td></tr>
+        <tr><td>–</td><td><strong>Összesen</strong></td><td>–</td><td>–</td><td><strong>3 340 000</strong></td><td>–</td></tr>
+      </tbody>
+    </table>
+    <p>Az életút során beszedett adó a kezdeti ár 33,4%-a. Összevetésül: a mai 27%-os áfa az első eladáskor 2,7 millió forint, a használt eladások viszont gyakorlatilag adómentesek. Az LTG tehát nem feltétlenül növeli a teljes terhet – <strong>átrendezi</strong> azt az életciklus mentén. A tényleges hatás a tranzakciószám rugalmasságától függ: ha a 13–17%-os kulcs miatt kevesebb adásvétel történik, a bevétel és a flotta összetétele is változik.</p>
+
+    <h2 id="kockazatok"><span class="num">10.</span>Kockázatok</h2>
+    <ul>
+      <li><strong>Jogi validáció:</strong> minden kinyert normát jogásznak kell ellenőriznie.</li>
+      <li><strong>Adatminőség:</strong> a forrás-korpusz résleges; a hiányzó §-ok hamis képet adhatnak.</li>
+      <li><strong>Viselkedési hatás:</strong> a magas tranzakciós kulcs visszaszoríthatja a legális piacot.</li>
+      <li><strong>Adatlicenc:</strong> több ország korpusza eltérő feltételekkel használható.</li>
+      <li><strong>Változáskezelés:</strong> a jogszabályok folyamatosan módosulnak; a gráfot verziózni kell.</li>
+    </ul>
+
+    <h2 id="osszefoglalo"><span class="num">11.</span>Összefoglaló</h2>
+    <p>Az LTG nem jogszabály, hanem <strong>leírási réteg</strong>: a vagyontárgyak életciklusát állapotgépként, az adókat pedig az állapotok közötti átmenetekhez rendelt szabályokként ábrázolja. Ezzel ugyanaz a modell kezeli az új és a használt autót, a lopást és az exportot, a magyar és a német kulcsokat. A jogi szöveg továbbra is XML-ben él, a szemantika JSON-LD-ben, a kettőt pedig hivatkozások kötik össze.</p>
+    <p>A következő lépés a <strong>CAR-pilot</strong>: 20–50 rendelkezés feldolgozása, a teljes eseménymátrix felrajzolása és a kulcsok szimulációja. Ha ez működik, a minta kiterjeszthető a teljes korpuszra és több országra.</p>
+
+    <div class="callout">
+      <h3>Letöltés</h3>
+      <p>A teljes koncepció nyomtatásra szánt változata:</p>
+      <a class="download" href="LTG_koncepcio_v0.2.pdf">LTG_koncepcio_v0.2.pdf</a>
+    </div>
+
+    <div class="callout" id="licenc">
+      <h3>Licenc</h3>
+      <p>Ez a munka az <strong>LTG Emailware License 1.0</strong> alatt érhető el: szabadon használható, másolható, módosítható és terjeszthető, <strong>azzal a feltétellel</strong>, hogy használat esetén küldesz egy rövid e-mailt a szerzőnek arról, mire használod.</p>
+      <p>Ez nem OSI-kompatibilis nyílt forráskódú licenc, mert a névfeltüntetésen túl értesítési kötelezettséget ír elő. A teljes szöveg: <a href="license.xhtml">LICENSE</a>.</p>
+    </div>
+
+  </main>
+
+  <footer class="site">
+    <p>LTG – Életciklus-adógráf · koncepció v0.2 · 2026 · <a href="license.xhtml">LTG Emailware License 1.0</a></p>
+    <p>Munkapéldány. Nem jogi tanácsadás. A példákban szereplő kulcsok illusztratívak.</p>
+  </footer>
+
+</div>
+</body>
+</html>
